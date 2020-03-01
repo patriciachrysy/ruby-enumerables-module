@@ -1,8 +1,8 @@
 # Advance building blocks in Ruby
 
-> Bubble Sorting
+> Enumerables Module
 
-Bubble sorting algorithm in Ruby.
+Rewriting all the enumerables module's methods.
 
 ## Built With
 
