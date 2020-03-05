@@ -1,6 +1,6 @@
 #!/home/manezeu/.rbenv/shims/ruby
 
-# rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Style/For, Metrics/BlockNesting, Layout/LineLength, Style/ConditionalAssignment, Metrics/ModuleLength, Metrics/AbcSize, Metrics/MethodLength
+# rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Style/For, Metrics/BlockNesting, Layout/LineLength, Style/ConditionalAssignment, Metrics/ModuleLength, Metrics/AbcSize, Metrics/MethodLength, Style/NestedTernaryOperator
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -52,13 +52,13 @@ module Enumerable
     caller = self
     if caller.class == Array || caller.class == Range
       if !param.nil?
-        param.class == Regexp ? caller.my_each { |item| result = false unless param.match?(item) } : caller.my_each { |item| result = false unless item.class <= param }
+        param.class == Regexp ? caller.my_each { |item| result = false unless param.match?(item) } : (param.class == String ? caller.my_each { |item| result = false unless item == param } : caller.my_each { |item| result = false unless item.class <= param })
       else
         block_given? ? caller.my_each { |item| result = false unless yield(item) } : caller.my_each { |item| result = false if !item || item.nil? }
       end
     elsif caller.class == Hash
       if !param.nil?
-        param.class == Regexp ? caller.my_each { |_key, value| result = false unless my_pattern.match?(value) } : caller.my_each { |_key, value| result = false unless value.class <= param }
+        param.class == Regexp ? caller.my_each { |_key, value| result = false unless my_pattern.match?(value) } : (param.class == String ? caller.my_each { |_key, value| result = false unless value == param } : caller.my_each { |_key, value| result = false unless value.class <= param })
       else
         block_given? ? caller.my_each { |_key, value| result = false unless yield(key, value) } : caller.my_each { |_key, value| result = false if !value || value.nil? }
       end
@@ -71,13 +71,13 @@ module Enumerable
     caller = self
     if caller.class == Array || caller.class == Range
       if !param.nil?
-        param.class == Regexp ? caller.my_each { |item| result = true if param.match?(item) } : caller.my_each { |item| result = true if item.class <= param }
+        param.class == Regexp ? caller.my_each { |item| result = true if param.match?(item) } : (param.class == String ? caller.my_each { |item| result = true if item.== param } : caller.my_each { |item| result = true if item.class <= param })
       else
         block_given? ? caller.my_each { |item| result = true if yield(item) } : caller.my_each { |item| result = true if item && !item.nil? }
       end
     elsif caller.class == Hash
       if !param.nil?
-        param.class == Regexp ? caller.my_each { |_key, value| result = true if my_pattern.match?(value) } : caller.my_each { |_key, value| result = true if value.class <= param }
+        param.class == Regexp ? caller.my_each { |_key, value| result = true if my_pattern.match?(value) } : (param.class == String ? caller.my_each { |_key, value| result = true if value == param } : caller.my_each { |_key, value| result = true if value.class <= param })
       else
         block_given? ? caller.my_each { |_key, value| result = true if yield(key, value) } : caller.my_each { |_key, value| result = true if value && !value.nil? }
       end
@@ -141,8 +141,7 @@ module Enumerable
       when 0
         caller.class == Range ? memo = caller.first : memo = caller[0]
         my_arr = caller.to_a
-        my_arr.shift
-        my_arr.my_each { |item| memo = yield(memo, item) }
+        my_arr[1..-1].my_each { |item| memo = yield(memo, item) }
       when 1
         if block_given?
           memo = param[0]
@@ -151,8 +150,7 @@ module Enumerable
           method = param[0]
           caller.class == Range ? memo = caller.first : memo = caller[0]
           my_arr = caller.to_a
-          my_arr.shift
-          my_arr.my_each { |item| memo = memo.send(method, item) }
+          my_arr[1..-1].my_each { |item| memo = memo.send(method, item) }
         end
       when 2
         method = param[1]
@@ -163,18 +161,16 @@ module Enumerable
       my_hash = caller
       case size
       when 0
-        memo = caller.first
-        my_hash.shift
-        my_hash.my_each { |_key, value| memo = yield(memo, value) }
+        memo = caller.values.first
+        my_hash.keys[1..-1].my_each { |value| memo = yield(memo, my_hash[value]) }
       when 1
         if block_given?
           memo = param[0]
           caller.my_each { |_key, value| memo = yield(memo, value) }
         else
           method = param[0]
-          memo = caller.first
-          my_hash.shift
-          my_hash.my_each { |_key, value| memo = memo.send(method, value) }
+          memo = caller.values.first
+          my_hash.keys[1..-1].my_each { |value| memo = memo.send(method, my_hash[value]) }
         end
       when 2
         method = param[1]
@@ -189,4 +185,4 @@ end
 def multiply_els(arr)
   arr.my_inject(:*)
 end
-# rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Style/For, Metrics/BlockNesting, Layout/LineLength, Style/ConditionalAssignment, Metrics/ModuleLength, Metrics/AbcSize, Metrics/MethodLength
+# rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Style/For, Metrics/BlockNesting, Layout/LineLength, Style/ConditionalAssignment, Metrics/ModuleLength, Metrics/AbcSize, Metrics/MethodLength, Style/NestedTernaryOperator
