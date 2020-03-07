@@ -44,9 +44,9 @@ To get a local copy up and running follow these simple example steps.
    * `%w[ant bear cat].my_all?(/t/)`
    * `[1, 2i, 3.14].my_any?(Integer)`
    * `%w[ant bear cat].my_none? { |word| word.length ==5 }`
-   * `[1,2,3,4,5].ary.my_count{ |x| x%2==0 }`
+   * `[1,2,3,4,5].my_count{ |x| x%2==0 }`
    * `(1..4).my_map { |i| i*i }`
-   * `(5..10).my_inject(:+)` or `(5..10).my_inject(1) { |product, n| product * n }` or `%w{ cat sheep bear }.my_inject {|memo, word| memo.length > word.length ? memo : word end}`
+   * `(5..10).my_inject(:+)` or `(5..10).my_inject(1) { |product, n| product * n }` or `%w{ cat sheep bear }.my_inject {|memo, word| memo.length > word.length ? memo : word }`
    * `multiply_els([1,2,3])`
 
 
