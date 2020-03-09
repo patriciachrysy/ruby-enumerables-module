@@ -1,8 +1,8 @@
 # Advance building blocks in Ruby
 
-> Bubble Sorting
+> Enumerable Module extension
 
-Bubble sorting algorithm in Ruby.
+Rewriting all the enumerables module's methods.
 
 ## Built With
 
@@ -12,11 +12,9 @@ Bubble sorting algorithm in Ruby.
 
 ## Getting Started
 
-**This is an example of how you may give instructions on setting up your project locally.**
-**Modify this file to match your project, remove sections that don't apply. For example: delete the testing section if the currect project doesn't require testing.**
-
-
 To get a local copy up and running follow these simple example steps.
+
+- Clone the repository and there you go! ;-)
 
 ### Prerequisites
 
@@ -37,28 +35,28 @@ To get a local copy up and running follow these simple example steps.
 
 ### Run tests
 
-- add code lines to bubble_sort.rb file
-   * `p bubble_sort([4, 3, 78, 2, 0, 2])` (sort in ascending order)
-   * `p bubble_sort(["hi","hello","hey"])` (sort in alphabetic order)
-   * `p bubble_sort_by([4, 3, 78, 2, 0, 2]) { |first, second| first <=> second }` (sort in ascending order)
-   * `p bubble_sort_by(["hi","hello","hey"]) { |first, second| first <=> second }` (sort in alphabetic order)
-   * `p bubble_sort_by(["hi","hello","hey"]) { |first, second| first.length - second.length }`(sort in ascending string length order)
-- run the file using "ruby filename" command
+- In the command line type `irb` command
+- Then type `require ./enumerables.rb`
+- Use the test these test cases in order to test each function and compare the result you get when testing with the original corresponding function
+   * `[1,2,3].my_each{ |o| p o }` or `{one:1,two:2,three:3}.my_each{ |o, l| p l }`
+   * `[1,2,3].my_each_with_index{ |o| p o }` or `{one:1,two:2,three:3}.my_each_with_index{ |o, l| p l }`
+   * `[:foo, :bar].my_select { |x| x == :foo }`
+   * `%w[ant bear cat].my_all?(/t/)`
+   * `[1, 2i, 3.14].my_any?(Integer)`
+   * `%w[ant bear cat].my_none? { |word| word.length ==5 }`
+   * `[1,2,3,4,5].my_count{ |x| x%2==0 }`
+   * `(1..4).my_map { |i| i*i }`
+   * `(5..10).my_inject(:+)` or `(5..10).my_inject(1) { |product, n| product * n }` or `%w{ cat sheep bear }.my_inject {|memo, word| memo.length > word.length ? memo : word }`
+   * `multiply_els([1,2,3])`
 
 
-## Authors
+## Author
 
 👤 **Manezeu Patricia Chrystelle**
 
 - Github: [@githubhandle](https://github.com/patriciachrysy)
 - Twitter: [@twitterhandle](https://twitter.com/ManezeuP)
 - Linkedin: [linkedin](https://www.linkedin.com/in/manezeu-patricia-chrystelle-095072118/)
-
-👤 **Theophile Kango**
-
-- Github: [@githubhandle](https://github.com/Theophile-Kango)
-- Twitter: [@twitterhandle](https://twitter.com/Theophadh)
-- Linkedin: [linkedin](https://www.linkedin.com/in/theophile-kango-b6b580194/)
 
 ## 🤝 Contributing
 
