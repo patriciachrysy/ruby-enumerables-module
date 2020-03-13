@@ -60,5 +60,51 @@ describe Enumerable do
         end
     end
 
-    
+    describe '#my_none?' do
+        it 'Returns true if none of elements in the enumerables matches the condition in the block' do
+            expect(range.my_none?{|item| item == 0 }).to eql(true)
+        end
+        it 'Returns false if at least one element in the enumerables matches the parameter' do
+            expect(range.my_none?(Integer)).not_to eql(true)
+        end
+    end
+    describe '#my_count' do
+        it 'Returns the number of elements that match the condition in the block' do
+            expect(arr.my_count{|element| element > 2}).to eql(3)
+        end
+        it 'Returns the number of elements in enumerables when no block and no parameter is passed' do
+            expect(hash.my_count).to eql(5)
+        end
+        it 'Returns zero when no element matches the parameter' do
+            expect(arr.my_count(6)).not_to eql(1)
+        end
+    end
+    describe '#my_map' do
+        it 'Applies the function in the block to each element in the enumerable' do
+            expect(range.my_map{|item| item**2}).to eql([1,4,9,16,25])
+        end
+        it 'Applies the function in the proc passed in parameter to every element of the enumerables' do
+            my_proc = Proc.new{|num| num += num}
+            expect(range.my_map(my_proc)).not_to eql(range)
+        end
+    end
+    describe '#my_inject' do
+        it 'Applies the operator passed in parameter to all the values of the enumerables' do
+            expect(arr.my_inject(:+)).to eql(15)
+        end
+        it 'Applies the function passed in the block to all the elements of the enumerables' do
+            expect(string_arr.my_inject{|memo, item| memo.length > item.length ? memo : item}).to eql('hamster')
+        end
+        it 'Applies the operator passed in parameter to all the values of the enumerables and the value passed as first parameter' do
+            expect(arr.my_inject(10, :+)).not_to eql(15)
+        end
+        it 'Applies the function passed in the block to all the elements of the enumerables starting from the element passed in parameter' do
+            expect(string_arr.my_inject('animals'){|memo, item| memo.length >= item.length ? memo : item}).not_to eql('hamster')
+        end
+    end
+    describe '#multiply_els' do
+        it 'Multiplies all the elements in the enumerables passed in parameter and returns the result' do
+            expect(multiply_els(arr)).to eql(120)
+        end
+    end
 end
